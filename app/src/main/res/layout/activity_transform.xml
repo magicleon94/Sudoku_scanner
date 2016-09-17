@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    tools:context="com.example.magicleon.sudokuscanner.MainActivity"
+    android:orientation="vertical">
+
+    <com.example.magicleon.sudokuscanner.TransformView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/transformView"
+        android:layout_weight="5"
+        />
+
+    <Button
+        android:layout_width="361dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/lullo"
+        android:text="Transform!"
+        android:layout_weight="0"/>
+
+</LinearLayout>

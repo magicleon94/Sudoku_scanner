@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SudokuScanner</string>
+    <string name="transformTitle">Transformation</string>
+</resources>
