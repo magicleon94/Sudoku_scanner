@@ -62,7 +62,7 @@ public class TransformView extends View {
         }
         polypaint.setColor(Color.GREEN);
         polypaint.setStyle(Paint.Style.STROKE);
-        polypaint.setStrokeWidth(4);
+        polypaint.setStrokeWidth(3);
     }
     public void setBitmap(Bitmap bm){
         myBM = bm;
@@ -240,8 +240,8 @@ public class TransformView extends View {
         transformer.loadOCV();
 
         Log.d("AA","Starting Transformation");
-
-        scaled = transformer.addrizzone(scaled,handles);
+        Log.d("AA","screen size: " + screenWidth + " x " + screenHeight );
+        scaled = transformer.addrizzone(scaled,handles,screenWidth,screenHeight);
 
         Log.d("AA","Done, scaled sizes: " + scaled.getHeight() + " x " + scaled.getWidth());
 

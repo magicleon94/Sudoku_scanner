@@ -62,7 +62,6 @@ public class myHandle {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setTextSize(50);
         canvas.drawText(Integer.toString(index),x,y,mPaint);
-        canvas.drawText("x = " + Float.toString(x) + " y = " + Float.toString(y),x,y+70,mPaint);
     }
 
     public boolean nearMe(float x, float y){
