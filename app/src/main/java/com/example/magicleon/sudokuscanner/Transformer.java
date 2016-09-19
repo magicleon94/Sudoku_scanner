@@ -90,7 +90,7 @@ public class Transformer {
 //        Imgproc.GaussianBlur(outputMat,outputMat,new Size(0,0),10);
 //        Imgproc.adaptiveThreshold(outputMat,outputMat,255,Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.THRESH_BINARY,15,40);
         //creating the output bitmap
-        
+
         Bitmap outputBitmap = Bitmap.createBitmap((int)dst_width,(int)dst_height, Bitmap.Config.RGB_565);
 
         //Mat to B
