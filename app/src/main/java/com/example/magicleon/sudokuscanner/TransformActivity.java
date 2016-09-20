@@ -24,7 +24,7 @@ public class TransformActivity extends AppCompatActivity {
         transformView = (TransformView) findViewById(R.id.transformView);
         bm = BitmapFactory.decodeFile(getIntent().getStringExtra("photoPath"));
         transformView.setBitmap(bm);
-        transformButton = (Button) findViewById(R.id.lullo);
+        transformButton = (Button) findViewById(R.id.transformButton);
 
         transformButton.setOnClickListener(new View.OnClickListener() {
             @Override

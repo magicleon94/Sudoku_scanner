@@ -44,22 +44,6 @@ public class Transformer {
         double dst_height = Math.max(distance(srcPts.get(0),srcPts.get(3)),
                 distance(srcPts.get(1),srcPts.get(2)));
 
-        if (dst_width<dst_height){
-            Log.d("AA","destination width is lesser than height, scaling height");
-            Log.d("AA","Before: " + dst_height);
-
-            dst_height = dst_width * image.getHeight()/ image.getWidth();
-
-            Log.d("AA","After: " + dst_width);
-        }else{
-            Log.d("AA","destination width is greater than height, scaling width");
-            Log.d("AA","Before: " + dst_width);
-
-            dst_width = dst_height * image.getWidth() / image.getHeight();
-
-            Log.d("AA","After: " + dst_width);
-        }
-
         List<Point> dstPoints= new ArrayList<Point>();
         dstPoints.add(new Point(0,0));
         dstPoints.add(new Point(dst_width,0));
@@ -71,7 +55,7 @@ public class Transformer {
 
         //getting the transformation matrix
         Mat perspectiveTransformation = Imgproc.getPerspectiveTransform(srcMat,dstMat);
-        Core.normalize(perspectiveTransformation,perspectiveTransformation);
+//        Core.normalize(perspectiveTransformation,perspectiveTransformation);
 
 
         //getting the input matrix from the given bitmap

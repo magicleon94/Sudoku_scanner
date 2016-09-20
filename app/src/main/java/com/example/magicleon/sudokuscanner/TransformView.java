@@ -124,7 +124,7 @@ public class TransformView extends View {
 
         }else {
             if (scaledSet && showingResult) {
-                canvas.drawBitmap(scaled, null, mMeasuredRect, null);
+                canvas.drawBitmap(scaled,0,0,null);
             }
         }
 
@@ -241,7 +241,7 @@ public class TransformView extends View {
 
         Log.d("AA","Starting Transformation");
         Log.d("AA","screen size: " + screenWidth + " x " + screenHeight );
-        scaled = transformer.addrizzone(scaled,handles,screenWidth,screenHeight);
+        scaled = getScaled(transformer.addrizzone(scaled,handles,screenWidth,screenHeight));
 
         Log.d("AA","Done, scaled sizes: " + scaled.getHeight() + " x " + scaled.getWidth());
 
