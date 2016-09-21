@@ -2,18 +2,27 @@ package com.example.magicleon.sudokuscanner;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -241,12 +250,21 @@ public class TransformView extends View {
 
         Log.d("AA","Starting Transformation");
         Log.d("AA","screen size: " + screenWidth + " x " + screenHeight );
-        scaled = getScaled(transformer.addrizzone(scaled,handles,screenWidth,screenHeight));
+        Bitmap notScaled = transformer.addrizzone(scaled,handles,screenWidth,screenHeight);
+        scaled = getScaled(notScaled);
 
         Log.d("AA","Done, scaled sizes: " + scaled.getHeight() + " x " + scaled.getWidth());
 
         showingResult = true;
 
         invalidate();
+
+        TessBaseAPI tessBaseAPI = new TessBaseAPI();
+        tessBaseAPI.init("/data/user/0/com.example.magicleon.sudokuscanner","ita");
+        tessBaseAPI.setImage(notScaled);
+        String recognisedText = tessBaseAPI.getUTF8Text();
+        tessBaseAPI.end();
+        Log.d("AA","Recognised text:\n" + recognisedText);
+        Toast.makeText(getContext(),recognisedText,Toast.LENGTH_LONG).show();
     }
 }

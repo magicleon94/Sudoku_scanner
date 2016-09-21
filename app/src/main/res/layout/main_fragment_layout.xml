@@ -8,11 +8,10 @@
         android:text="Take Photo"
         android:layout_gravity="center"
         android:id="@+id/photobutton"/>
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/imview"/>-->
-<!--    <com.example.magicleon.sudokuscanner.TransformView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Download files"
+        android:layout_gravity="center"
+        android:id="@+id/downloadButton"/>
 </LinearLayout>

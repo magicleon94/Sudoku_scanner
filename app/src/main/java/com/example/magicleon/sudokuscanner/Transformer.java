@@ -3,6 +3,8 @@ package com.example.magicleon.sudokuscanner;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
+
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -71,11 +73,12 @@ public class Transformer {
         //applying the transformation
         Imgproc.warpPerspective(inputMat,outputMat,perspectiveTransformation,new Size(dst_width,dst_height));
 
+        Imgproc.equalizeHist(outputMat,outputMat);
 //        Imgproc.GaussianBlur(outputMat,outputMat,new Size(0,0),10);
 //        Imgproc.adaptiveThreshold(outputMat,outputMat,255,Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.THRESH_BINARY,15,40);
         //creating the output bitmap
 
-        Bitmap outputBitmap = Bitmap.createBitmap((int)dst_width,(int)dst_height, Bitmap.Config.RGB_565);
+        Bitmap outputBitmap = Bitmap.createBitmap((int)dst_width,(int)dst_height, Bitmap.Config.ARGB_8888);
 
         //Mat to B
         Imgproc.cvtColor(outputMat,outputMat,Imgproc.COLOR_GRAY2RGB);
@@ -87,4 +90,5 @@ public class Transformer {
     private double distance(Point p1, Point p2){
         return Math.sqrt((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y));
     }
+
 }
