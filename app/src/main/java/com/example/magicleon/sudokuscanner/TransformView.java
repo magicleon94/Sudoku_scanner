@@ -20,9 +20,15 @@ import android.widget.Toast;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -34,7 +40,6 @@ public class TransformView extends View {
     ArrayList<myHandle> handles = new ArrayList<myHandle>();
 
     boolean scaledSet = false;
-    boolean showingResult = false;
 
     int handleTouchedIndex = -1;
 
@@ -81,9 +86,6 @@ public class TransformView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         boolean handled = false;
 //        Log.d("AA",event.toString());
-        if(showingResult){
-            return super.onTouchEvent(event);
-        }
         switch (event.getActionMasked()){
             case MotionEvent.ACTION_DOWN:
                 handleTouchedIndex = getTouchedHandle(event.getX(),event.getY());
@@ -113,7 +115,7 @@ public class TransformView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(scaledSet && !showingResult) {
+        if(scaledSet) {
             Path poly = new Path();
 
             canvas.drawBitmap(scaled, null, mMeasuredRect, null);
@@ -131,10 +133,6 @@ public class TransformView extends View {
             poly.close();
             canvas.drawPath(poly,polypaint);
 
-        }else {
-            if (scaledSet && showingResult) {
-                canvas.drawBitmap(scaled,0,0,null);
-            }
         }
 
     }
@@ -244,27 +242,15 @@ public class TransformView extends View {
         return handles;
     }
 
-    public void showResult(){
+    public ArrayList<Integer>  computeSudoku(){
         Transformer transformer = new Transformer();
         transformer.loadOCV();
 
-        Log.d("AA","Starting Transformation");
-        Log.d("AA","screen size: " + screenWidth + " x " + screenHeight );
-        Bitmap notScaled = transformer.addrizzone(scaled,handles,screenWidth,screenHeight);
-        scaled = getScaled(notScaled);
+        ArrayList<Integer> sudoku = transformer.addrizzone(scaled,handles,screenWidth,screenHeight);
+        return sudoku;
 
-        Log.d("AA","Done, scaled sizes: " + scaled.getHeight() + " x " + scaled.getWidth());
-
-        showingResult = true;
-
-        invalidate();
-
-        TessBaseAPI tessBaseAPI = new TessBaseAPI();
-        tessBaseAPI.init("/data/user/0/com.example.magicleon.sudokuscanner","ita");
-        tessBaseAPI.setImage(notScaled);
-        String recognisedText = tessBaseAPI.getUTF8Text();
-        tessBaseAPI.end();
-        Log.d("AA","Recognised text:\n" + recognisedText);
-        Toast.makeText(getContext(),recognisedText,Toast.LENGTH_LONG).show();
     }
+
+
+
 }

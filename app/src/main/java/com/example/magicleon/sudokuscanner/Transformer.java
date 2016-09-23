@@ -29,7 +29,7 @@ public class Transformer {
         System.loadLibrary("opencv_java3");
     }
 
-    public Bitmap addrizzone(Bitmap image, ArrayList<myHandle> sourcePoints, int screenWidth, int screenHeight){
+    public ArrayList<Integer>  addrizzone(Bitmap image, ArrayList<myHandle> sourcePoints, int screenWidth, int screenHeight){
         // sourcePoints are  expected  to be clockwise ordered
         // getting the size of the output image
 
@@ -73,9 +73,7 @@ public class Transformer {
         //applying the transformation
         Imgproc.warpPerspective(inputMat,outputMat,perspectiveTransformation,new Size(dst_width,dst_height));
 
-        Imgproc.equalizeHist(outputMat,outputMat);
-//        Imgproc.GaussianBlur(outputMat,outputMat,new Size(0,0),10);
-//        Imgproc.adaptiveThreshold(outputMat,outputMat,255,Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.THRESH_BINARY,15,40);
+//        Imgproc.threshold(outputMat,outputMat,150,255,Imgproc.THRESH_OTSU);
         //creating the output bitmap
 
         Bitmap outputBitmap = Bitmap.createBitmap((int)dst_width,(int)dst_height, Bitmap.Config.ARGB_8888);
@@ -84,11 +82,48 @@ public class Transformer {
         Imgproc.cvtColor(outputMat,outputMat,Imgproc.COLOR_GRAY2RGB);
         Utils.matToBitmap(outputMat,outputBitmap);
 
-        return outputBitmap;
+        return getTable(outputBitmap);
     }
 
     private double distance(Point p1, Point p2){
         return Math.sqrt((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y));
     }
 
+    ArrayList<Integer>  getTable(Bitmap result){
+//        int sudoku[] = new int[81];
+        ArrayList<Integer> sudoku = new ArrayList<Integer>();
+        int segW = result.getWidth() / 9;
+        int segH = result.getHeight() / 9;
+
+        int xyMargin = 10;
+        int sizeMargin = 22;
+
+        int x,y;
+
+        TessBaseAPI tessBaseAPI = new TessBaseAPI();
+        tessBaseAPI.init("/data/user/0/com.example.magicleon.sudokuscanner","ita");
+        tessBaseAPI.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST,"1234567890");
+        tessBaseAPI.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST,"!@#$%^&*   ()_+=-[]}{" +";:'\"\\|~`,./<>?");
+        tessBaseAPI.setImage(result);
+
+        for(int i = 0; i<9;i++){
+            y = i*segH + xyMargin;
+
+            for (int j = 0; j<9; j++) {
+                x = j * segW + xyMargin;
+                tessBaseAPI.setRectangle(x,y,segW-sizeMargin,segH-sizeMargin);
+                String number = tessBaseAPI.getUTF8Text();
+
+                try{
+                    int  value = Integer.parseInt(number);
+                    sudoku.add(i*9+j, value>0 && value<=9 ? value : 0 );
+                }catch (NumberFormatException e){
+                    sudoku.add(i*9+j, 0 );
+                }
+            }
+
+        }
+        tessBaseAPI.end();
+        return  sudoku;
+    }
 }
