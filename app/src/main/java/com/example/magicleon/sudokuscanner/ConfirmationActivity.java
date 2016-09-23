@@ -13,21 +13,11 @@ import java.util.ArrayList;
  */
 
 public class ConfirmationActivity extends AppCompatActivity {
-    TextView sampleResult;
+    SudokuView  sudokuView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirmation_layout);
-        sampleResult = (TextView) findViewById(R.id.sudokuString);
-        ArrayList<Integer> sudoku = getIntent().getIntegerArrayListExtra("sudoku");
-        String text = "";
-        for(int i=0; i<sudoku.size();i++){
-            if(i%9==0 && i>0){
-                text += "\n\n\n";
-            }
-
-            text += sudoku.get(i) + "\t\t\t\t";
-        }
-        sampleResult.setText(text);
+        sudokuView = new SudokuView(getApplicationContext(),getIntent().getIntegerArrayListExtra("sudoku"));
+        setContentView(sudokuView);
     }
 }

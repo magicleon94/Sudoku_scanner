@@ -1,5 +1,6 @@
 package com.example.magicleon.sudokuscanner;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ public class TransformActivity extends AppCompatActivity {
     Button transformButton;
     Bitmap bm;
     Intent intent;
+    ProgressDialog mProgressDialog;
 
 
     @Override
@@ -31,11 +33,17 @@ public class TransformActivity extends AppCompatActivity {
         bm = BitmapFactory.decodeFile(getIntent().getStringExtra("photoPath"));
         transformView.setBitmap(bm);
         transformButton = (Button) findViewById(R.id.transformButton);
-
+        mProgressDialog = new ProgressDialog(this);
         transformButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mProgressDialog.setMessage("Computing");
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
                 ArrayList<Integer> sudoku = transformView.computeSudoku();
+                mProgressDialog.dismiss();
                 intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
                 intent.putIntegerArrayListExtra("sudoku",sudoku);
                 startActivity(intent);
